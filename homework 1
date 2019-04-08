@@ -1,0 +1,24 @@
+function [L,U,P]=GaussCol(A)
+n=length(A);
+for k=1:n-1
+[s,t]=max(abs(A(k:n,k))); 
+p=t+k-1;
+temp=A(k,1:n); 
+A(k,1:n)=A(p,1:n); 
+A(p,1:n)=temp;
+u(k)=p;
+if A(k,k)~=0
+    A(k+1:n,k)=A(k+1:n,k)/A(k,k);
+    A(k+1:n,k+1:n)=A(k+1:n,k+1:n)-A(k+1:n,k)*A(k,k+1:n);
+else
+break ;
+end
+end 
+L=tril(A);U=triu(A);L=L-diag(diag(L))+diag(ones(1,n));
+P=eye(n);
+for i=1:n-1
+    temp=P(i,:);
+    P(i,:)=P(u(i),:);
+    P(u(i),:)=temp;
+end
+end
